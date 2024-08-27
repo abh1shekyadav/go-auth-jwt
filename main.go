@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	port = os.Getenv("PORT")
+	port := os.Getenv("PORT")
 	if port == "" {
-		port = 8000
+		port = "8000"
 	}
 
 	router := gin.New()
@@ -24,6 +24,6 @@ func main() {
 	router.GET("/api-2", func(c *gin.Context) {
 		c.JSON(200, gin.H{"success": "Access granted for api-2"})
 	})
-	router.RUN(":" + port)
+	router.Run(":" + port)
 
 }
