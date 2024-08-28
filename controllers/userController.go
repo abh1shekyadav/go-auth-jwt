@@ -1,13 +1,6 @@
 package controllers
 
 import (
-<<<<<<< HEAD
-	helper "go-auth-jwt/helpers"
-	"net/http"
-	"next/http"
-
-	"github.com/abh1shekyadav/go-auth-jwt/database"
-=======
 	"context"
 	helper "go-auth-jwt/helpers"
 	"log"
@@ -17,7 +10,6 @@ import (
 
 	"github.com/abh1shekyadav/go-auth-jwt/database"
 	"github.com/abh1shekyadav/go-auth-jwt/models"
->>>>>>> f3e3c46 (Added user methods)
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
@@ -70,13 +62,6 @@ func Login()
 func GetUsers()
 
 func GetUser() gin.HandlerFunc {
-<<<<<<< HEAD
-	return func(ctx *gin.Context) {
-		userId := ctx.Param("user_id")
-		if err := helper.MatchUserTypeToUid(ctx, userId); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		}
-=======
 	return func(c *gin.Context) {
 		userId := c.Param("user_id")
 		if err := helper.MatchUserTypeToUid(c, userId); err != nil {
@@ -92,6 +77,5 @@ func GetUser() gin.HandlerFunc {
 			return
 		}
 		c.JSON(http.StatusOK, user)
->>>>>>> f3e3c46 (Added user methods)
 	}
 }
