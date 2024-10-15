@@ -2,12 +2,13 @@ package helpers
 
 import (
 	"context"
-	"go-auth-jwt/database"
+	"fmt"
 	"log"
 	"os"
 	"time"
 
 	"github.com/abh1shekyadav/go-auth-jwt/database"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -55,6 +56,34 @@ func GenerateAllTokens(email string, firstName string, lastName string, userType
 
 	return token, refreshToken, err
 
+}
+
+func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
+	token, err := jwt.ParseWithClaims(
+		signedToken,
+		&SignedDetails{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(SECRET_KEY), nil
+		},
+	)
+
+	if err != nil {
+		msg = err.Error()
+		return
+	}
+
+	claims, ok := token.Claims.(*SignedDetails)
+	if !ok {
+		msg = fmt.Sprintf("The token is invalid")
+		msg = err.Error()
+		return
+	}
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		msg = fmt.Sprintf("The token is expired")
+		msg = err.Error()
+		return
+	}
+	return claims, msg
 }
 
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
